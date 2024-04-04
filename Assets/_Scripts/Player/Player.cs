@@ -5,8 +5,23 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IAgent, IHittable
 {
+    [SerializeField]
+    private int maxHealth;
+
+    private int health;
+    public int Health
+    {
+        get => health;
+        set
+        {
+            health = Mathf.Clamp(value, 0, maxHealth);
+            UIHealth.UpdateHealthUI(health);
+        }
+    }
+
     [field: SerializeField]
-    public int Health { get; set; }
+    public UIHealth UIHealth { get; set; }
+
     [field: SerializeField]
     public UnityEvent OnDie { get; set; }
 
@@ -15,6 +30,11 @@ public class Player : MonoBehaviour, IAgent, IHittable
 
     private bool dead;
 
+    private void Start()
+    {
+        Health = maxHealth;
+        UIHealth.Initialize(Health);
+    }
     public void GetHit(int damage, GameObject damageDealer)
     {
         if (!dead)

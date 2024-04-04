@@ -11,10 +11,7 @@ public class UIHealth : MonoBehaviour
     private Sprite heartFull = null, heartEmpty = null;
     private int heartCount = 0;
     private List<Image> hearts = new List<Image>();
-    private void Start()
-    {
-        Initialize(5);
-    }
+  
     public void Initialize(int livesCount)
     {
         heartCount = livesCount;

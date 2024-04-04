@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected GameObject muzzle;
     [SerializeField] protected bool reloadCorouting = false;
     [SerializeField] protected int ammo = 10;
+    [SerializeField] private UIAmmo uiAmmo;
     protected bool isShooting = false;
 
     public int Ammo
@@ -18,6 +19,7 @@ public class Weapon : MonoBehaviour
         set
         {
             ammo = Mathf.Clamp(value, 0, weaponData.AmmoCapacity);
+            uiAmmo.UpdateBulletText(ammo);
         }
     }
     public bool AmmoFull { get => Ammo >= weaponData.AmmoCapacity; }
@@ -103,6 +105,6 @@ public class Weapon : MonoBehaviour
     {
         float spred = Random.Range(-weaponData.SpreadAngle, weaponData.SpreadAngle);
         Quaternion bulletSpredRotation = Quaternion.Euler(new Vector3(0, 0, spred));
-        return muzzle.transform.rotation*bulletSpredRotation;
+        return muzzle.transform.rotation * bulletSpredRotation;
     }
 }
