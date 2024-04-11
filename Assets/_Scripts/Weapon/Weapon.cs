@@ -10,7 +10,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected GameObject muzzle;
     [SerializeField] protected bool reloadCorouting = false;
     [SerializeField] protected int ammo = 10;
-    [SerializeField] private UIAmmo uiAmmo;
     protected bool isShooting = false;
 
     public int Ammo
@@ -19,7 +18,7 @@ public class Weapon : MonoBehaviour
         set
         {
             ammo = Mathf.Clamp(value, 0, weaponData.AmmoCapacity);
-            uiAmmo.UpdateBulletText(ammo);
+            OnAmmoChange?.Invoke(Ammo);
         }
     }
     public bool AmmoFull { get => Ammo >= weaponData.AmmoCapacity; }
@@ -29,6 +28,10 @@ public class Weapon : MonoBehaviour
 
     [field: SerializeField]
     public UnityEvent OnShootNoAmmo { get; set; }
+
+    [field: SerializeField]
+
+    public UnityEvent<int> OnAmmoChange { get; set; }
 
     private void Start()
     {
