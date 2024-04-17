@@ -27,4 +27,8 @@ public class DissolveFeedback : Feedback
             sequence.AppendCallback(() => DeathCallback.Invoke());
         }
     }
+    private void OnEnable()
+    {
+        spriteRenderer.material.SetFloat("_Dissolve", 1f);
+    }
 }

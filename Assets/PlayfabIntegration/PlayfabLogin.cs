@@ -19,7 +19,9 @@ public class PlayfabLogin : MonoBehaviour
     [SerializeField] private TMP_InputField verifyPassword;
     [SerializeField] private TMP_InputField email;
 
+    [Header("Extras")]
     [SerializeField] private GameObject loginInProgress;
+    [SerializeField] private TMP_Text vallidationMessage;
     public void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -28,7 +30,8 @@ public class PlayfabLogin : MonoBehaviour
 
         if (PlayFabClientAPI.IsClientLoggedIn())
         {
-            Debug.LogWarning("User is already logged in");
+            ValidationMessage("User is already logged in", Color.green);
+            StartCoroutine(LoadGameScene());
         }
     }
     private void Login(ILogin loginMethod, object loginParams)
@@ -63,7 +66,7 @@ public class PlayfabLogin : MonoBehaviour
 
         if (errorMessage.Length > 0)
         {
-            Debug.LogError(errorMessage);
+            ValidationMessage(errorMessage, Color.red);
             return false;
         }
 
@@ -93,8 +96,6 @@ public class PlayfabLogin : MonoBehaviour
 
     bool ValidateRegisterData()
     {
-        Debug.Log("Password: " + password.text + "verify pass: " + verifyPassword.text);
-        //Validating data
         string errorMessage = "";
 
         if (!email.text.Contains("@"))
@@ -120,7 +121,7 @@ public class PlayfabLogin : MonoBehaviour
 
         if (errorMessage.Length > 0)
         {
-            Debug.LogError(errorMessage);
+            ValidationMessage(errorMessage, Color.red);
             return false;
         }
 
@@ -129,8 +130,7 @@ public class PlayfabLogin : MonoBehaviour
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        Debug.Log("Register Success!");
-
+        ValidationMessage("Register Success!", Color.green);
         PlayerPrefs.SetString("USERNAME", username.text);
         PlayerPrefs.SetString("PW", password.text);
 
@@ -144,14 +144,12 @@ public class PlayfabLogin : MonoBehaviour
 
     private void OnLoginSuccess(LoginResult result)
     {
-        Debug.Log("Login Success!");
-        Debug.Log(result.PlayFabId);
-
+        ValidationMessage("Login Success!", Color.green);
         PlayerPrefs.SetString(PlayFabConstants.SavedUsername, username.text);
 
         loginInProgress.SetActive(false);
 
-        SceneManager.LoadScene(1);
+        StartCoroutine(LoadGameScene());
     }
 
     private readonly GetPlayerCombinedInfoRequestParams _loginInfoParams =
@@ -169,8 +167,19 @@ public class PlayfabLogin : MonoBehaviour
         Debug.LogError("Login failure: " + error.Error + "  " + error.ErrorDetails + error + "  " +
                        error.ApiEndpoint + "  " + error.ErrorMessage);
         loginInProgress.SetActive(false);
+        ValidationMessage(error.ErrorMessage, Color.red);
     }
-
+    private void ValidationMessage(string errorMessage, Color color)
+    {
+        vallidationMessage.text = errorMessage;
+        vallidationMessage.color = color;
+        vallidationMessage.gameObject.SetActive(true);
+    }
+    private IEnumerator LoadGameScene()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(1);
+    }
     public void Exit()
     {
         Application.Quit();

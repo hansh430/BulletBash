@@ -129,6 +129,56 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0110439835, y: -0.38}
   m_Size: {x: 0.6598625, y: 0.2534624}
   m_Direction: 1
+--- !u!1 &1525528377055510102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8047257110442419914}
+  - component: {fileID: 7482463315170465631}
+  m_Layer: 8
+  m_Name: ItemDropper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8047257110442419914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525528377055510102}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6978564862760875210}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7482463315170465631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525528377055510102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a88c85361caca49b9e4aca162c5d2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemToDrop:
+  - rate: 1
+    itemPrefab: {fileID: 2295455315314448776, guid: ffc1bb2aae944eb45a37ffaed33a64a4, type: 3}
+  - rate: 0.8
+    itemPrefab: {fileID: 2684024112927229550, guid: 142aba534cbf5ae47b785f8ff8b0cc87, type: 3}
+  dropChance: 0.5
 --- !u!1 &1699462324315233489
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +464,7 @@ MonoBehaviour:
   pitchRandomness: 0.1
   hitClip: {fileID: 8300000, guid: 739174ccbca42d34c88579866c1e36aa, type: 3}
   deathClip: {fileID: 8300000, guid: 918d5cae1ca984a47abfda660d6ef771, type: 3}
-  voiceLineClip: {fileID: 8300000, guid: 7e425c8c1ba7f3a49afb051e87677bf3, type: 3}
+  voiceLineClip: {fileID: 8300000, guid: 0fec2a9f2b344184bb9c1de83590a287, type: 3}
 --- !u!1 &5008741693424287239
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +538,7 @@ GameObject:
   - component: {fileID: 6389228283713663717}
   - component: {fileID: 4393973835135205381}
   - component: {fileID: 4285481817944730642}
+  - component: {fileID: 6595511228094961547}
   m_Layer: 8
   m_Name: TransitionChase
   m_TagString: Untagged
@@ -524,6 +575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Descisions>k__BackingField:
   - {fileID: 4285481817944730642}
+  - {fileID: 6595511228094961547}
   <PositiveResult>k__BackingField: {fileID: 7689348096019354006}
   <NegativeResult>k__BackingField: {fileID: 0}
 --- !u!114 &4285481817944730642
@@ -538,7 +590,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f18d8189088dc46a59b54536b89186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Distance>k__BackingField: 5
+  <Distance>k__BackingField: 12
+--- !u!114 &6595511228094961547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028482320865902035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53a1f1dae3c92547a6b07d23a08d52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Distance: 12
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 640
+  <OnPlayerSpotted>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2578345861830342928}
+        m_TargetAssemblyTypeName: AgentSound, Assembly-CSharp
+        m_MethodName: PlayVoiceSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5452277253687764573
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,7 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f18d8189088dc46a59b54536b89186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Distance>k__BackingField: 5
+  <Distance>k__BackingField: 12
 --- !u!1 &6415375106905373340
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +982,7 @@ Transform:
   m_GameObject: {fileID: 7251459024685988900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.02, y: 0, z: 0}
+  m_LocalPosition: {x: 5.94, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -909,6 +992,7 @@ Transform:
   - {fileID: 4058998856569306519}
   - {fileID: 8067480604223888959}
   - {fileID: 6762401885180542704}
+  - {fileID: 8047257110442419914}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &3488822265820268328
@@ -1074,6 +1158,18 @@ MonoBehaviour:
       - m_Target: {fileID: 895162258989418391}
         m_TargetAssemblyTypeName: FeedbackPlayer, Assembly-CSharp
         m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7482463315170465631}
+        m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
+        m_MethodName: DropItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1451,7 +1547,7 @@ MonoBehaviour:
   - {x: -0.31603813, y: -0.49290088, z: 0}
   m_ShapePathHash: -1331576675
   m_Mesh: {fileID: 0}
-  m_InstanceId: -74354
+  m_InstanceId: -6862
   m_LocalBounds:
     m_Center: {x: 0.020776033, y: 0.062022775, z: 0}
     m_Extent: {x: 0.3386948, y: 0.55492365, z: 0}
