@@ -21,7 +21,9 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
     [field: SerializeField]
     public UnityEvent OnDie { get; set; }
 
-    private bool dead = false;
+    private bool isEnemyDead = false;
+    public bool IsEnemyDead { get => isEnemyDead; set => isEnemyDead = value; }
+
     private AgentMovement agentMovement;
 
     private void Awake()
@@ -37,24 +39,26 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
     }
     public void GetHit(int damage, GameObject damageDealer)
     {
-        if (!dead)
+        if (!isEnemyDead)
         {
             Health--;
             OnGetHit?.Invoke();
             if (Health <= 0)
             {
-                dead = true;
+                isEnemyDead = true;
+                EnemySpawner.EnemyCount--;
                 OnDie?.Invoke();
             }
         }
     }
     public void Die()
     {
-        Destroy(gameObject);
+        //  Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     public void PerformAttack()
     {
-        if (!dead)
+        if (!isEnemyDead)
         {
             enemyAttack.Attack(EnemyData.Damage);
         }

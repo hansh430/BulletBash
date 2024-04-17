@@ -18,6 +18,8 @@ public class Player : MonoBehaviour, IAgent, IHittable
             UIHealth.UpdateHealthUI(health);
         }
     }
+    private bool isPlayerDead;
+    public bool IsPlayerDead => isPlayerDead;
 
     [field: SerializeField]
     public UIHealth UIHealth { get; set; }
@@ -28,7 +30,11 @@ public class Player : MonoBehaviour, IAgent, IHittable
     [field: SerializeField]
     public UnityEvent OnGetHit { get; set; }
 
-    private bool dead;
+    private PlayerWeapon playerWeapon;
+    private void Awake()
+    {
+        playerWeapon = GetComponentInChildren<PlayerWeapon>();
+    }
 
     private void Start()
     {
@@ -37,14 +43,45 @@ public class Player : MonoBehaviour, IAgent, IHittable
     }
     public void GetHit(int damage, GameObject damageDealer)
     {
-        if (!dead)
+        if (!isPlayerDead)
         {
             Health--;
             OnGetHit?.Invoke();
             if (Health <= 0)
             {
                 OnDie?.Invoke();
-                dead = true;
+                isPlayerDead = true;
+            }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Resource"))
+        {
+            var resource = collision.gameObject.GetComponent<Resources>();
+            if (resource != null)
+            {
+                switch (resource.ResourcesData.ResourceType)
+                {
+                    case ResourcesTypeEnum.Health:
+                        if (Health >= maxHealth)
+                        {
+                            return;
+                        }
+                        Health += resource.ResourcesData.GetAmount();
+                        resource.PickUpResource();
+                        break;
+                    case ResourcesTypeEnum.Ammo:
+                        if (playerWeapon.AmmoFull)
+                        {
+                            return;
+                        }
+                        playerWeapon.AddAmmo(resource.ResourcesData.GetAmount());
+                        resource.PickUpResource();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
