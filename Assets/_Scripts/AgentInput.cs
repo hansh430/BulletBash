@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using EasyJoystick;
 
 public class AgentInput : MonoBehaviour, IAgentInput
 {
     private Camera mainCamera;
     private bool fireButtonDown = false;
+    [SerializeField] private Joystick joystick;
     [field: SerializeField]
     public UnityEvent<Vector2> OnMovementKeyPressed { get; set; }
 
@@ -33,7 +35,7 @@ public class AgentInput : MonoBehaviour, IAgentInput
 
     private void GetFireInput()
     {
-        if(Input.GetAxisRaw("Fire1")>0f)
+        if (Input.GetAxisRaw("Fire1") > 0f)
         {
             if (fireButtonDown == false)
             {
@@ -62,5 +64,11 @@ public class AgentInput : MonoBehaviour, IAgentInput
     private void GetMovementInput()
     {
         OnMovementKeyPressed?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        // InputFromJoyStick(); // uncomment for android build
+    }
+    private void InputFromJoyStick()
+    {
+        joystick.gameObject.SetActive(true);
+        OnMovementKeyPressed?.Invoke(new Vector2(joystick.Horizontal(), joystick.Vertical()));
     }
 }

@@ -51,6 +51,7 @@ public class Player : MonoBehaviour, IAgent, IHittable
             {
                 OnDie?.Invoke();
                 isPlayerDead = true;
+                ScoreSubject.Instance.SetScoreToLeaderBoard();
             }
         }
     }

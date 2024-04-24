@@ -23,6 +23,7 @@ public class LookDecision : AIDecision
         }
         return false;
     }
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (UnityEditor.Selection.activeGameObject == gameObject && enemyAIBrain != null &&
@@ -34,4 +35,5 @@ public class LookDecision : AIDecision
             Gizmos.color = Color.white;
         }
     }
+#endif
 }

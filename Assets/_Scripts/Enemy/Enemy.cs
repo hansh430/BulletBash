@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
             {
                 isEnemyDead = true;
                 EnemySpawner.EnemyCount--;
+                ScoreSubject.Instance.IncreaseScore(1);
                 OnDie?.Invoke();
             }
         }
