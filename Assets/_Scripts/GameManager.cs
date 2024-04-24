@@ -21,5 +21,10 @@ public class GameManager : MonoBehaviour
     {
         DOTween.KillAll();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        ScoreSubject.Instance.UpdateHighScore();
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

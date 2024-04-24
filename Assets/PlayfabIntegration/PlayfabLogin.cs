@@ -1,17 +1,23 @@
 using PlayFab;
 using PlayFab.ClientModels;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayfabLogin : MonoBehaviour
 {
     [Header("Login UI")]
     [SerializeField] private TMP_InputField loginUsername;
     [SerializeField] private TMP_InputField loginPassword;
+    [SerializeField] private TMP_InputField nameInput;
+    [SerializeField] private GameObject namePanel;
+    [SerializeField] private GameObject loginPanel;
+    [SerializeField] private Button playButtton;
 
     [Header("Register UI")]
     [SerializeField] private TMP_InputField username;
@@ -22,6 +28,7 @@ public class PlayfabLogin : MonoBehaviour
     [Header("Extras")]
     [SerializeField] private GameObject loginInProgress;
     [SerializeField] private TMP_Text vallidationMessage;
+    [SerializeField] private List<Button> allButtons = new List<Button>();
     public void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -31,8 +38,16 @@ public class PlayfabLogin : MonoBehaviour
         if (PlayFabClientAPI.IsClientLoggedIn())
         {
             ValidationMessage("User is already logged in", Color.green);
-            StartCoroutine(LoadGameScene());
+            playButtton.interactable = true;
         }
+        else
+        {
+            playButtton.interactable=false;
+        }
+    }
+    public void OnPlayButtonClicked()
+    {
+        StartCoroutine(LoadGameScene());
     }
     private void Login(ILogin loginMethod, object loginParams)
     {
@@ -146,10 +161,44 @@ public class PlayfabLogin : MonoBehaviour
     {
         ValidationMessage("Login Success!", Color.green);
         PlayerPrefs.SetString(PlayFabConstants.SavedUsername, username.text);
-
         loginInProgress.SetActive(false);
+        string name = null;
+        if (result.InfoResultPayload.PlayerProfile != null)
+        {
+            name = result.InfoResultPayload.PlayerProfile.DisplayName;
+        }
+        if (name == null)
+        {
+            namePanel.SetActive(true);
+            loginPanel.SetActive(false);
+        }
+        else
+        {
+            playButtton.interactable = true;
+        }
 
+    }
+
+    public void SubmitNameButton()
+    {
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = nameInput.text,
+        };
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnError);
+        loginInProgress.SetActive(true);
+    }
+
+    private void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)
+    {
+        loginInProgress.SetActive(false);
+        ValidationMessage("User name set!", Color.green);
         StartCoroutine(LoadGameScene());
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        Debug.Log(error);
     }
 
     private readonly GetPlayerCombinedInfoRequestParams _loginInfoParams =
@@ -159,7 +208,8 @@ public class PlayfabLogin : MonoBehaviour
             GetUserData = true,
             GetUserInventory = true,
             GetUserVirtualCurrency = true,
-            GetUserReadOnlyData = true
+            GetUserReadOnlyData = true,
+            GetPlayerProfile = true,
         };
 
     private void OnLoginFailure(PlayFabError error)
@@ -177,8 +227,17 @@ public class PlayfabLogin : MonoBehaviour
     }
     private IEnumerator LoadGameScene()
     {
+        SetAllButtonsInteractables(false);
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(1);
+        SetAllButtonsInteractables(true);
+    }
+    private void SetAllButtonsInteractables(bool status)
+    {
+        for (int i = 0; i < allButtons.Count; i++)
+        {
+            allButtons[i].interactable = status;
+        }
     }
     public void Exit()
     {
