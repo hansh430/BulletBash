@@ -10,9 +10,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button settingButton;
     [SerializeField] private Button logOutButton;
     [SerializeField] private Button soundButton;
+    [SerializeField] private Button quitButton;
     [SerializeField] private GameObject settingPanel;
     private void Start()
     {
+#if UNITY_WEBGL
+        quitButton.interactable = false;
+#endif
         settingButton.onClick.AddListener(OnClickSettingButton);
         logOutButton.onClick.AddListener(OnClickLogOutButton);
     }

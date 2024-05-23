@@ -63,8 +63,8 @@ public class AgentInput : MonoBehaviour, IAgentInput
 
     private void GetMovementInput()
     {
-        OnMovementKeyPressed?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        // InputFromJoyStick(); // uncomment for android build
+       // OnMovementKeyPressed?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        InputFromJoyStick(); // uncomment for android build
     }
     private void InputFromJoyStick()
     {

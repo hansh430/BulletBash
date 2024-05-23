@@ -308,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad5c29d65a294d4ca26f6b1e2a0d85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystick: {fileID: 0}
   <OnMovementKeyPressed>k__BackingField:
     m_PersistentCalls:
       m_Calls:
@@ -1189,7 +1190,7 @@ MonoBehaviour:
   - {x: -0.02809009, y: -0.22240719, z: 0}
   m_ShapePathHash: -10560888
   m_Mesh: {fileID: 0}
-  m_InstanceId: -358358
+  m_InstanceId: -336846
   m_LocalBounds:
     m_Center: {x: -0.024039, y: 0.19516487, z: 0}
     m_Extent: {x: 0.35845363, y: 0.42178157, z: 0}
@@ -1589,6 +1590,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0110439835, y: -0.13914837}
-  m_Size: {x: 0.6598625, y: 0.2534624}
+  m_Offset: {x: -0.03723953, y: -0.2701265}
+  m_Size: {x: 0.8837203, y: 0.5535243}
   m_Direction: 1
