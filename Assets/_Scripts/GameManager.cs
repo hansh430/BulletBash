@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         ScoreSubject.Instance.UpdateHighScore();
     }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     public void QuitGame()
     {
         Application.Quit();
